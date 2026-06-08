@@ -153,6 +153,7 @@
    "outputs": [],
    "source": [
     "import matplotlib.pyplot as plt\n",
+    "%matplotlib inline\n",
     "from matplotlib.colors import LogNorm, Normalize\n",
     "\n",
     "widths_slicer = widths.copy()\n",
