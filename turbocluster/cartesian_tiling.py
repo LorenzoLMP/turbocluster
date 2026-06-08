@@ -236,7 +236,8 @@ class CartesianTiling:
     def release_gpu_memory(self):
         # TODO: Add deletion of all GPU variables stored in self
 
-        del self.sort_index
+        if self.sort_index is not None:
+            del self.sort_index
         del self.unsort_index
         del self.start_index_for_tile
         del self.particles_per_tile

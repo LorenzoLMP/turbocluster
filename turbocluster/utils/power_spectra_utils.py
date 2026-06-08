@@ -94,8 +94,10 @@ def power_spectrum1d(depo, deposited_variable, **kwargs):
 
     if "window" in kwargs:  # for normalization with window function
         # factor from https://holometer.fnal.gov/GH_FFT.pdf Eq. 21
-        # powerspectr /= np.square(np.sum(ndim_window))/(np.sum(np.square(ndim_window))*(Nx*Ny*Nz))
-        powerspectr /= np.sum(np.square(ndim_window)) / (Nx * Ny * Nz)
+        powerspectr /= np.square(np.sum(ndim_window)) / (
+            np.sum(np.square(ndim_window)) * (Nx * Ny * Nz)
+        )
+        # powerspectr /= np.sum(np.square(ndim_window)) / (Nx * Ny * Nz)
 
     energy_fourier_space = np.sum(powerspectr * deltak / (2.0 * np.pi))
     print("energy (fourier space) = %.4e" % (energy_fourier_space))

@@ -48,7 +48,7 @@ def extract_turbulent_var(
         % (
             sf.tile.particles_per_tile.min(),
             sf.tile.particles_per_tile.max(),
-            cp.mean(sf.tile.particles_per_tile),
+            cp.sum(sf.tile.particles_per_tile) / len(sf.tile.particles_per_tile),
         )
     )
     if isinstance(variable, str):

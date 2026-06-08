@@ -21,7 +21,7 @@ def weight_cic(xg, xi, h, Deltax):
         return minOverlap / h
 
 
-@cuda.jit(device=True, inline=True)
+@cuda.jit(device=True)
 def weight_tsc(xg, xi, h, Deltax):
     """
     xg is the coordinate of the grid point
@@ -62,7 +62,7 @@ def weight_tsc(xg, xi, h, Deltax):
     return weight
 
 
-@cuda.jit(device=True, inline=True)
+@cuda.jit(device=True)
 def weight_psc(xg, xi, h, Deltax):
     """
     xg is the coordinate of the grid point
@@ -402,7 +402,7 @@ def deposit_on_grid(
                                         variable[ip] * weight_tmp,
                                     )
 
-        # kernel_type == 3 is Piecewise Cubic Splina (PCS), particle is sort of
+        # kernel_type == 3 is Piecewise Cubic Spline (PCS), particle is sort of
         # 2nd order polynomial
         elif kernel_type == 3:
             cuda.atomic.add(scratch, (0, 0, 0), 1.0)

@@ -21,6 +21,7 @@ caption: Notebook examples
 ---
 /notebooks/test_smoothing-filter.ipynb
 /notebooks/deposit_to_grid_example.ipynb
+/notebooks/potential_energy_sphere.ipynb
 ```
 
 

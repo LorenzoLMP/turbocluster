@@ -18,24 +18,32 @@ make html
 """
 import sys
 import os
+
 sys.path.insert(0, os.path.abspath(os.path.join("..", "..")))
 
 
-project = 'turbocluster'
-copyright = '2026, Lorenzo Maria Perrone, Thomas Berlok'
-author = 'Lorenzo Maria Perrone, Thomas Berlok'
-release = '2026'
+project = "turbocluster"
+copyright = "2026, Lorenzo Maria Perrone, Thomas Berlok"
+author = "Lorenzo Maria Perrone, Thomas Berlok"
+release = "2026"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx_rtd_theme', "nbsphinx", "myst_parser",
-              "sphinx.ext.napoleon", "sphinx_copybutton", 'sphinx.ext.autodoc']
+extensions = [
+    "sphinx_rtd_theme",
+    "nbsphinx",
+    "sphinx.ext.napoleon",
+    "sphinx_copybutton",
+    "sphinx.ext.autodoc",
+    "myst_parser",
+    # "myst_nb",
+]
 
-templates_path = ['_templates']
+templates_path = ["_templates"]
 exclude_patterns = []
 
-source_suffix = ['.rst', '.md']
+source_suffix = [".rst", ".md"]
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -44,7 +52,7 @@ source_suffix = ['.rst', '.md']
 # html_theme = 'alabaster'
 
 html_theme = "sphinx_rtd_theme"
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
 # Napoleon settings
 napoleon_google_docstring = True
@@ -62,7 +70,7 @@ napoleon_use_rtype = True
 autodoc_default_options = {
     "members": True,
     "undoc-members": False,
-    "private-members": False
+    "private-members": False,
 }
 
-autodoc_mock_imports = ['numba','nvtx','cupy']
+autodoc_mock_imports = ["numba", "nvtx", "cupy"]

@@ -1,6 +1,6 @@
 # Obtaining sample data
 
-Running the turbocluster examples requires an Arepo snapshot of a cosmological simulation. A suitable snapshot can be found in the `data` folder of the [Paicos repository](https://github.com/tberlok/paicos) and can be downloaded on your local system. To do so, follow the following steps:
+Running the turbocluster examples requires an Arepo snapshot of a cosmological simulation. A suitable snapshot (~620 MB) can be found in the `data` folder of the [Paicos repository](https://github.com/tberlok/paicos) and can be downloaded on your local system. To do so, follow the following steps:
 
 1. Create a directory on your filesystem, e.g. `mkdir /path/to/sample_data` and `cd` there
 2. Type in the following commands to download the snapshot (or dowload them directly from GitHub):

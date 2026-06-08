@@ -53,10 +53,11 @@ class DepositCartesianGrid(DataGpuInit):
 
         if "hsml" not in self.__dict__:
             print("No `hsml' argument given. Defaults to gas particles")
-            # Calculate the smoothing length
-            # this is the radius of the 'spherical' voronoi cell
-            # test with 4 times radius
-            self.hsml = 4.0 * np.cbrt((self.snap["0_Volume"]) / (4.0 * np.pi / 3.0))
+            # Calculate the smoothing length: it should be
+            # the radius of the 'spherical' voronoi cell
+            # can be increased for smoother results
+            # now it is 2 times bigger
+            self.hsml = 2.0 * np.cbrt((self.snap["0_Volume"]) / (4.0 * np.pi / 3.0))
         else:
             self.hsml = self.__dict__["hsml"]
 
