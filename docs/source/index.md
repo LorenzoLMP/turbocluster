@@ -9,6 +9,7 @@ caption: Getting started
 ---
 installation
 examples
+sample_data
 instructions_newton
 ```
 
