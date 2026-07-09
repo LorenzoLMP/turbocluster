@@ -29,13 +29,13 @@ export CUDA_PATH=/path/to/cuda/12.0 # cupy
 
     ```
     git clone git@github.com:LorenzoLMP/turbocluster.git
-    cd turbocluster-public
+    cd turbocluster
     pip install -r requirements.txt
     ```
 
 4. Add the directory of the turbocluster repository to your PYTHONPATH, e.g., in the `.bash_profile`:
     ```
-    export PYTHONPATH=$PYTHONPATH:/path/to/turbocluster-public
+    export PYTHONPATH=$PYTHONPATH:/path/to/turbocluster
     ```
 
 5. Open a new shell. Check that the installation worked and that you can import turbocluster: 
