@@ -28,7 +28,7 @@ export CUDA_PATH=/path/to/cuda/12.0 # cupy
 3. Clone the directory from GitHub and install the required packages:
 
     ```
-    git clone git@github.com:LorenzoLMP/turbocluster-public.git
+    git clone git@github.com:LorenzoLMP/turbocluster.git
     cd turbocluster-public
     pip install -r requirements.txt
     ```
