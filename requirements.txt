@@ -3,8 +3,7 @@ numpy
 matplotlib
 h5py
 astropy >= 4.3
-numba
-numba-cuda
-paicos >= 0.1.17
+numba-cuda[cu13]
+paicos[dev] >= 0.1.17
 cupy-cuda13x
 nvtx

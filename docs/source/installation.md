@@ -17,12 +17,15 @@ export CUDA_PATH=/path/to/cuda/12.0 # cupy
 1. Create a conda environment:
 
     - Download miniforge and follow instructions at <https://github.com/conda-forge/miniforge/#download>
-    - Create an environment called e.g. `turbocluster': ```conda create --name turbocluster python=3.14```
-    - Install pip ```conda install pip```
+    - Create an environment called e.g. `turbocluster': 
+    ```
+    conda create --name turbocluster python=3.14
+    ```
 
-2. Activate the environment (if not already activated):
+2. Activate the environment and install pip (if not already installed):
     ```
     conda activate turbocluster
+    conda install pip
     ```
 
 3. Clone the directory from GitHub and install the required packages:
