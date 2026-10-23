@@ -6,7 +6,7 @@ Steps to get paicos working on Newton, including GPU-code.
 
 ### Install paicos and turbocluster
 
-Follow the installation instructions [https://turbocluster.readthedocs.io/en/latest/installation.html](here).
+Follow the installation instructions [here](https://turbocluster.readthedocs.io/en/latest/installation.html).
 
 ### Start an interactive gpu-session
 ```
