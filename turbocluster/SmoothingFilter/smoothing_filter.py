@@ -166,19 +166,28 @@ class SmoothingFilter(DataGpuInit):
         if weight is not None:
             self._send_variable_to_gpu(weight, gpu_key="weight", sort=True)
 
-        if not hasattr(filter_length, "unit"):
-            raise RuntimeError("filter_length must have unit")
-
-        # send filter_length to gpu
-        if isinstance(filter_length.value, np.ndarray):
-            assert filter_length.shape[0] == self.index.shape[0]
-            self._send_variable_to_gpu(
-                filter_length, gpu_key="filter_lengths", sort=True
-            )
+        if pa.settings.use_units:
+            if not hasattr(filter_length, "unit"):
+                raise RuntimeError("filter_length must have unit")
+            # send filter_length to gpu
+            if isinstance(filter_length.value, np.ndarray):
+                assert filter_length.shape[0] == self.index.shape[0]
+                self._send_variable_to_gpu(
+                    filter_length, gpu_key="filter_lengths", sort=True
+                )
+            else:
+                self.gpu_variables["filter_lengths"] = (
+                    cp.ones(self.Np) * filter_length.value
+                )
         else:
-            self.gpu_variables["filter_lengths"] = (
-                cp.ones(self.Np) * filter_length.value
-            )
+            # no units
+            if isinstance(filter_length, np.ndarray):
+                assert filter_length.shape[0] == self.index.shape[0]
+                self._send_variable_to_gpu(
+                    filter_length, gpu_key="filter_lengths", sort=True
+                )
+            else:
+                self.gpu_variables["filter_lengths"] = cp.ones(self.Np) * filter_length
 
         if selection is not None:
             self._send_variable_to_gpu(
