@@ -64,28 +64,33 @@ class SmoothingFilter(DataGpuInit):
         if pa.settings.use_units:
             self.hsml = self.hsml.to(self.pos.unit)
 
+        self.multiplier = gauss_multiplier
+
         if search_radius is None:
             search_radius = 10.0 * self.hsml
-        elif not hasattr(search_radius, "unit"):
-            search_radius = search_radius * self.code_length
-
-        if not isinstance(search_radius.value, np.ndarray):
-            # it is not a vector already
-            search_radius = np.ones(self.hsml.shape) * search_radius
-        else:
-            assert search_radius.shape[0] == self.hsml.shape[0]
-
-        self.multiplier = gauss_multiplier
 
         if pa.settings.use_units:
             # use units
+            if not hasattr(search_radius, "unit"):
+                search_radius = search_radius * self.code_length
             assert (
                 search_radius.unit == self.code_length.unit
             ), "this restriction applies"
-            self.search_radius = 1.1 * self.multiplier * search_radius
+
+            if not isinstance(search_radius.value, np.ndarray):
+                # it is not a 1d array already
+                search_radius = np.ones(self.hsml.shape) * search_radius
+            else:
+                assert search_radius.shape[0] == self.hsml.shape[0]
         else:
-            # does not need units
-            self.search_radius = 1.1 * self.multiplier * np.array(search_radius)
+            # no units
+            if not isinstance(search_radius, np.ndarray):
+                # it is not a 1d array already
+                search_radius = np.ones(self.hsml.shape) * search_radius
+            else:
+                assert search_radius.shape[0] == self.hsml.shape[0]
+
+        self.search_radius *= 1.1 * self.multiplier
 
         # This selects the region
         # rng = nvtx.start_range(message="region_selection")
