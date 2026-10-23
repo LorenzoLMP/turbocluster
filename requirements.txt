@@ -1,9 +1,9 @@
 scipy >= 1.7.3
-numpy
+numpy == 2.4.6
 matplotlib
 h5py
 astropy >= 4.3
 numba-cuda[cu13]
 paicos[dev] >= 0.1.17
-cupy-cuda13x
+cupy-cuda13x[ctk]
 nvtx
