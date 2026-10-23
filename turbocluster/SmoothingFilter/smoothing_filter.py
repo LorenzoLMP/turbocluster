@@ -90,7 +90,7 @@ class SmoothingFilter(DataGpuInit):
             else:
                 assert search_radius.shape[0] == self.hsml.shape[0]
 
-        self.search_radius *= 1.1 * self.multiplier
+        self.search_radius = 1.1 * self.multiplier * search_radius
 
         # This selects the region
         # rng = nvtx.start_range(message="region_selection")
