@@ -232,7 +232,10 @@ class SmoothingFilter(DataGpuInit):
         offsets = self.tile.off_sets
         filter_lengths = self.gpu_variables["filter_lengths"]
 
-        max_search_radius = self.max_search_radius.value / self.multiplier
+        if pa.settings.use_units:
+            max_search_radius = self.max_search_radius.value / self.multiplier
+        else:
+            max_search_radius = self.max_search_radius / self.multiplier
 
         if filter_type == "mean":
             filter_type = 0
@@ -430,20 +433,29 @@ class SmoothingFilter(DataGpuInit):
 
         variable_str, unit_quantity = self._send_variable_to_gpu(variable, sort=True)
 
-        if not hasattr(filter_length, "unit"):
-            raise RuntimeError("filter_length must have unit")
-        filt_length_unit = filter_length.unit_quantity
-
-        # send filter_length to gpu
-        if isinstance(filter_length.value, np.ndarray):
-            assert filter_length.shape[0] == self.index.shape[0]
-            self._send_variable_to_gpu(
-                filter_length, gpu_key="filter_lengths", sort=True
-            )
+        if pa.settings.use_units:
+            if not hasattr(filter_length, "unit"):
+                raise RuntimeError("filter_length must have unit")
+            filt_length_unit = filter_length.unit
+            # send filter_length to gpu
+            if isinstance(filter_length.value, np.ndarray):
+                assert filter_length.shape[0] == self.index.shape[0]
+                self._send_variable_to_gpu(
+                    filter_length, gpu_key="filter_lengths", sort=True
+                )
+            else:
+                self.gpu_variables["filter_lengths"] = (
+                    cp.ones(self.Np) * filter_length.value
+                )
         else:
-            self.gpu_variables["filter_lengths"] = (
-                cp.ones(self.Np) * filter_length.value
-            )
+            # no units
+            if isinstance(filter_length, np.ndarray):
+                assert filter_length.shape[0] == self.index.shape[0]
+                self._send_variable_to_gpu(
+                    filter_length, gpu_key="filter_lengths", sort=True
+                )
+            else:
+                self.gpu_variables["filter_lengths"] = cp.ones(self.Np) * filter_length
 
         if selection is not None:
             self._send_variable_to_gpu(
@@ -454,8 +466,9 @@ class SmoothingFilter(DataGpuInit):
         # grad_var is a 3-dim vector
         grad_var = self._apply_derivative_gpu(variable_str, filter_type)
 
-        if unit_quantity is not None:
-            grad_var = grad_var * unit_quantity / filt_length_unit
+        if pa.settings.use_units:
+            if unit_quantity is not None:
+                grad_var = grad_var * unit_quantity / filt_length_unit
 
         nvtx.end_range(rng0)
 
