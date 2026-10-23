@@ -21,7 +21,8 @@ class DataGpuInit:
 
         self.snap = snap
         self.cartesian = True
-        self.code_length = code_length = self.snap.length
+        if pa.settings.use_units:
+            self.code_length = code_length = self.snap.length
         # self.npix = npix
         self.threadsperblock = threadsperblock
 
