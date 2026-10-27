@@ -1,5 +1,5 @@
 scipy >= 1.7.3
-numpy == 2.4.6
+numpy <= 2.4.6
 matplotlib
 h5py
 astropy >= 4.3
