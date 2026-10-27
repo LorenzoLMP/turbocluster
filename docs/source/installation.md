@@ -28,7 +28,17 @@ export CUDA_PATH=/path/to/cuda/12.0 # cupy
     conda install pip
     ```
 
-3. Clone the directory from GitHub and install the required packages:
+### Option 1: installing via PyPi
+
+- Install the latest version from PyPi:
+
+    ```
+    pip install turbocluster
+    ```
+
+### Option 2 (developer installation): clone from repository and add to PYTHONPATH
+
+- Clone the directory from GitHub and install the required packages:
 
     ```
     git clone git@github.com:LorenzoLMP/turbocluster.git
@@ -36,17 +46,19 @@ export CUDA_PATH=/path/to/cuda/12.0 # cupy
     pip install -r requirements.txt
     ```
 
-4. Add the directory of the turbocluster repository to your PYTHONPATH, e.g., in the `.bash_profile`:
+- Add the directory of the turbocluster repository to your PYTHONPATH, e.g., in the `.bash_profile`:
     ```
     export PYTHONPATH=$PYTHONPATH:/path/to/turbocluster
     ```
 
-5. Open a new shell. Check that the installation worked and that you can import turbocluster: 
+### Test your installation
+
+Open a new shell. Check that the installation worked and that you can import turbocluster: 
     ```
     python -c "import turbocluster"
     python -c "import cupy"
     python -c "from numba import cuda"
     python -c "import paicos; paicos.gpu_init()"
     ```
-    If no error message appeared, you are good to go!
+If no error message appeared, you are good to go!
 
