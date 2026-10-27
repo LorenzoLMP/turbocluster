@@ -9,7 +9,10 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
 ]
 
-dynamic = ["dependencies", "optional-dependencies", "license", "description", "version"]
+dynamic = ["dependencies", "optional-dependencies", "description", "version"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
 
 [tool.cibuildwheel]
 before-all = "uname -a"
