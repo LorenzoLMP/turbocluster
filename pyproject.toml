@@ -1,15 +1,18 @@
 [project]
 name = "turbocluster"
+version = "0.1"
 authors = [
     { name="Lorenzo Maria Perrone", email="lorenzolmp@protonmail.com" },
+    { name="Thomas Berlok", email="tberlok@gmail.com" },
 ]
+description = "A GPU-accelerated Python library for filtering turbulence in Arepo simulations"
 readme = "README.md"
 requires-python = ">=3.14.0"
 classifiers = [
     "Programming Language :: Python :: 3.14",
 ]
 
-dynamic = ["dependencies", "optional-dependencies", "description", "version"]
+dynamic = ["dependencies"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
