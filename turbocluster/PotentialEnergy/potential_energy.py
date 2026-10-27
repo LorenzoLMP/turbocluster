@@ -47,7 +47,10 @@ class PotentialEnergy(DataGpuInit):
             self.pos = self.snap["0_Coordinates"]
         else:
             self.pos = self.__dict__["pos"]
-            assert self.pos.unit == self.code_length.unit, "this restriction applies"
+            if pa.settings.use_units:
+                assert (
+                    self.pos.unit == self.code_length.unit
+                ), "this restriction applies"
 
         if "smoothing_length" not in self.__dict__:
             raise ValueError("Please provide smoothing_length")
@@ -57,31 +60,49 @@ class PotentialEnergy(DataGpuInit):
             raise ValueError("Please provide masses")
 
         mass = self.__dict__["mass"]
-        self.code_mass = code_mass = mass.uq
 
-        if hasattr(smoothing_length, "unit"):
+        if pa.settings.use_units:
+            self.code_mass = mass.uq
+
+        if pa.settings.use_units:
+            # use units
+            if not hasattr(smoothing_length, "unit"):
+                smoothing_length = smoothing_length * self.code_length
             assert (
                 smoothing_length.unit == self.code_length.unit
             ), "this restriction applies"
-        elif pa.settings.use_units:
-            smoothing_length = smoothing_length * self.code_length
-            # raise RuntimeError('smoothing_length must have unit')
 
-        if hasattr(mass, "unit"):
-            assert mass.unit == code_mass.unit, "this restriction applies"
-        elif pa.settings.use_units:
-            mass = mass * code_mass
-            # raise RuntimeError('smoothing_length must have unit')
-
-        if isinstance(smoothing_length.value, np.ndarray):
-            assert smoothing_length.shape[0] == self.pos.shape[0]
+            if not isinstance(smoothing_length.value, np.ndarray):
+                # it is not a 1d array already
+                smoothing_length = np.ones(self.pos.shape[0]) * smoothing_length
+            else:
+                assert smoothing_length.shape[0] == self.pos.shape[0]
         else:
-            smoothing_length = np.ones(self.pos.shape[0]) * smoothing_length.value
+            # no units
+            if not isinstance(smoothing_length, np.ndarray):
+                # it is not a 1d array already
+                smoothing_length = np.ones(self.pos.shape[0]) * smoothing_length
+            else:
+                assert smoothing_length.shape[0] == self.pos.shape[0]
 
-        if isinstance(mass.value, np.ndarray):
-            assert mass.shape[0] == self.pos.shape[0]
+        if pa.settings.use_units:
+            # use units
+            if not hasattr(mass, "unit"):
+                mass = mass * self.code_mass
+            assert mass.unit == self.code_mass.unit, "this restriction applies"
+
+            if not isinstance(mass.value, np.ndarray):
+                # it is not a 1d array already
+                mass = np.ones(self.pos.shape[0]) * mass
+            else:
+                assert mass.shape[0] == self.pos.shape[0]
         else:
-            mass = np.ones(self.pos.shape[0]) * mass.value
+            # no units
+            if not isinstance(mass, np.ndarray):
+                # it is not a 1d array already
+                mass = np.ones(self.pos.shape[0]) * mass
+            else:
+                assert mass.shape[0] == self.pos.shape[0]
 
         if self.cartesian:
             thickness = np.zeros(self.pos.shape[0]) * self.code_length
