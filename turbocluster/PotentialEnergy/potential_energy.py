@@ -105,7 +105,10 @@ class PotentialEnergy(DataGpuInit):
                 assert mass.shape[0] == self.pos.shape[0]
 
         if self.cartesian:
-            thickness = np.zeros(self.pos.shape[0]) * self.code_length
+            thickness = np.zeros(self.pos.shape[0])
+            if pa.settings.use_units:
+                thickness *= self.code_length
+
             self.index = self._do_region_selection(thickness, self.pos)
 
         # requires selection of the region
@@ -154,7 +157,8 @@ class PotentialEnergy(DataGpuInit):
             self.gpu_variables["smoothing_length"]
         )
 
-        self.G = pa.astropy.constants.G
+        if pa.settings.use_units:
+            self.G = pa.astropy.constants.G
 
     def compute_potential(self, angle=15):
         """
