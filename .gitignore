@@ -5,6 +5,9 @@ plots/
 *.npz
 *.rst
 *.html
+build/
+dist/
+turbocluster.egg-info
 
 # do not ignore latex document
 !latex-notes/notex.pdf
