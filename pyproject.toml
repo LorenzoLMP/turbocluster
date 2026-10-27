@@ -9,7 +9,7 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
 ]
 
-
+dynamic = ["dependencies", "optional-dependencies", "license", "description", "version"]
 
 [tool.cibuildwheel]
 before-all = "uname -a"
