@@ -1,2 +1,15 @@
+[project]
+name = "turbocluster"
+authors = [
+    { name="Lorenzo Maria Perrone", email="lorenzolmp@protonmail.com" },
+]
+readme = "README.md"
+requires-python = ">=3.14.0"
+classifiers = [
+    "Programming Language :: Python :: 3.14",
+]
+
+
+
 [tool.cibuildwheel]
 before-all = "uname -a"
