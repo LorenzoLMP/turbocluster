@@ -54,11 +54,13 @@ export CUDA_PATH=/path/to/cuda/12.0 # cupy
 ### Test your installation
 
 Open a new shell. Check that the installation worked and that you can import turbocluster: 
-    ```
-    python -c "import turbocluster"
-    python -c "import cupy"
-    python -c "from numba import cuda"
-    python -c "import paicos; paicos.gpu_init()"
-    ```
+
+```
+python -c "import turbocluster"
+python -c "import cupy"
+python -c "from numba import cuda"
+python -c "import paicos; paicos.gpu_init()"
+```
+
 If no error message appeared, you are good to go!
 
