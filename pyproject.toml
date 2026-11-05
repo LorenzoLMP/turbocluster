@@ -1,6 +1,6 @@
 [project]
 name = "turbocluster"
-version = "0.2.4"
+version = "0.2.5"
 authors = [
     { name="Lorenzo Maria Perrone", email="lorenzolmp@protonmail.com" },
     { name="Thomas Berlok", email="tberlok@gmail.com" },
@@ -20,10 +20,7 @@ dependencies = {file = ["requirements.txt"]}
 
 [tool.setuptools.packages.find]
 where = ["."]  # list of folders that contain the packages (["."] by default)
-include = ["turbocluster"]  # package names should match these glob patterns (["*"] by default)
+#include = ["turbocluster"]  # package names should match these glob patterns (["*"] by default)
 #exclude = []  # exclude packages matching these glob patterns (empty by default)
-namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
+#namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
 
-
-[tool.cibuildwheel]
-before-all = "uname -a"
