@@ -1,6 +1,6 @@
 [project]
 name = "turbocluster"
-version = "0.2"
+version = "0.2.3"
 authors = [
     { name="Lorenzo Maria Perrone", email="lorenzolmp@protonmail.com" },
     { name="Thomas Berlok", email="tberlok@gmail.com" },
