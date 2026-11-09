@@ -55,7 +55,9 @@ export CUDA_PATH=/path/to/cuda/12.0 # cupy
 
 ### Test your installation
 
-Open a new shell. Check that the installation worked and that you can import turbocluster: 
+Open a new shell. Activate the environment you just created, and `source ~/.bash_profile` (if you did option 2).
+
+Check that the installation worked and that you can import turbocluster: 
 
 ```
 python -c "import turbocluster"
