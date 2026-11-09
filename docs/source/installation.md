@@ -4,13 +4,15 @@
 
 Turbocluster is a library that uses CUDA kernels written in Python with Cupy and Numba to accelerate filtering of physical fields. Therefore it is **required** that your environment has a recent Nvidia GPU with a CUDA toolkit. For futher information, refer to the Cupy installation [here](https://docs.cupy.dev/en/stable/install.html).
 
+<!-- 
 Note: for Cupy and Numba to correctly locate your CUDA installation you may have to set the environment variables CUDA_HOME and CUDA_PATH in your .bashrc or .bash_profile as follows
 (substitute with the path to the CUDA installation on your system, and replace version number as necessary):
 
 ```
 export CUDA_HOME=/path/to/cuda/12.0 # numba
 export CUDA_PATH=/path/to/cuda/12.0 # cupy
-```
+``` 
+-->
 
 ## Installation steps
 

@@ -248,6 +248,10 @@ class SmoothingFilter(DataGpuInit):
         if iterative:
             iterativeFilter = 1  # iterative
 
+        if cp.max(filter_lengths) > max_search_radius:
+            err_msg = f"{cp.max(filter_lengths)} is larger than {max_search_radius}"
+            raise RuntimeError(err_msg)
+
         if cp.max(filter_lengths) > self.extra_layer_thickness:
             err_msg = (
                 f"{cp.max(filter_lengths)} is larger than {self.extra_layer_thickness}"
