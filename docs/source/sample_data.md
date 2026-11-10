@@ -17,7 +17,7 @@ wget -O fof_subhalo_tab_247.hdf5 https://sid.erda.dk/share_redirect/BmILDaDPPz
 cp paicos_user_settings_template.py paicos_user_settings.py
 ```
 5. Use your text editor of choice and replace the string `data_dir = '/.../'` in `paicos_user_settings.py` with the path to your snapshot folder, so that it reads, e.g., `data_dir = '/path/to/sample_data/'`
-6. Open a new terminal in your conda environment, import paicos, and double checked that `pa.root_dir` is now the same as your snapshot directory. If so, the snapshot can now be loaded as
+6. Open a new terminal in your conda environment, import paicos, and double checked that `pa.data_dir` is now the same as your snapshot directory. If so, the snapshot can now be loaded as
 ```
 snap = pa.Snapshot(pa.data_dir, 247)
 ```
