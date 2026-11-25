@@ -55,8 +55,9 @@ class SmoothingFilter(DataGpuInit):
 
         if "hsml" not in self.__dict__:
             print("No `hsml' argument given. Defaults to gas particles")
-            # Calculate the smoothing length
-            # this is the radius of the 'spherical' voronoi cell
+            # Calculate the radius of the 'spherical' voronoi cell
+            # this is used to check overlap with the domain to be filtered.
+            # The user can provide a custom hsml
             self.hsml = np.cbrt((self.snap["0_Volume"]) / (4.0 * np.pi / 3.0))
         else:
             self.hsml = self.__dict__["hsml"]
