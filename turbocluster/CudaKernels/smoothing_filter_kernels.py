@@ -177,20 +177,23 @@ def apply_filter_optimized(
                                     numSearchedPart += 1
                                     dist = distance((xp, yp, zp), pos[ip_other])
                                     if dist < filter_window * filter_length:
-                                        # smoothing kernel
-                                        weight_tmp = sphere_kernel(dist, filter_length)
-                                        # optional weight (e.g. mass, density, ...)
-                                        weight_tmp *= weights[ip_other]
-                                        # volume of voronoi cell
-                                        weight_tmp *= (
-                                            (4.0 / 3.0) * cp.pi * hsml[ip_other] ** 3
-                                        )
-                                        # normalization of the integral
-                                        normalization += weight_tmp
-                                        smoothVarRegister += (
-                                            variable[ip_other] * weight_tmp
-                                        )
-                                        numInteractingPartNew += 1
+                                        part_dist_bool = 1
+                                    else:
+                                        part_dist_bool = 0
+
+                                    # smoothing kernel
+                                    weight_tmp = sphere_kernel(dist, filter_length)
+                                    # optional weight (e.g. mass, density, ...)
+                                    weight_tmp *= weights[ip_other]
+                                    # volume of voronoi cell
+                                    weight_tmp *= (
+                                        (4.0 / 3.0) * cp.pi * hsml[ip_other] ** 3
+                                    )
+                                    weight_tmp *= part_dist_bool
+                                    # normalization of the integral
+                                    normalization += weight_tmp
+                                    smoothVarRegister += variable[ip_other] * weight_tmp
+                                    numInteractingPartNew += part_dist_bool
 
             elif filter_type == 1:
                 for tile_x in range(ip_tile_x_min, ip_tile_x_max + 1):
@@ -219,23 +222,25 @@ def apply_filter_optimized(
                                 ):
                                     numSearchedPart += 1
                                     dist = distance((xp, yp, zp), pos[ip_other])
+
                                     if dist < filter_window * filter_length:
-                                        # smoothing kernel
-                                        weight_tmp = gaussian_kernel(
-                                            dist, filter_length
-                                        )
-                                        # optional weight (e.g. mass, density, ...)
-                                        weight_tmp *= weights[ip_other]
-                                        # volume of voronoi cell
-                                        weight_tmp *= (
-                                            (4.0 / 3.0) * cp.pi * hsml[ip_other] ** 3
-                                        )
-                                        # normalization of the integral
-                                        normalization += weight_tmp
-                                        smoothVarRegister += (
-                                            variable[ip_other] * weight_tmp
-                                        )
-                                        numInteractingPartNew += 1
+                                        part_dist_bool = 1
+                                    else:
+                                        part_dist_bool = 0
+
+                                    # smoothing kernel
+                                    weight_tmp = gaussian_kernel(dist, filter_length)
+                                    # optional weight (e.g. mass, density, ...)
+                                    weight_tmp *= weights[ip_other]
+                                    # volume of voronoi cell
+                                    weight_tmp *= (
+                                        (4.0 / 3.0) * cp.pi * hsml[ip_other] ** 3
+                                    )
+                                    weight_tmp *= part_dist_bool
+                                    # normalization of the integral
+                                    normalization += weight_tmp
+                                    smoothVarRegister += variable[ip_other] * weight_tmp
+                                    numInteractingPartNew += part_dist_bool
 
             elif filter_type == 2:  # mexican hat filter
                 for tile_x in range(ip_tile_x_min, ip_tile_x_max + 1):
@@ -264,31 +269,35 @@ def apply_filter_optimized(
                                 ):
                                     numSearchedPart += 1
                                     dist = distance((xp, yp, zp), pos[ip_other])
+
                                     if dist < filter_window * filter_length:
-                                        # smoothing kernel
-                                        weight_tmp = mexican_kernel(dist, filter_length)
-                                        # optional weight (e.g. mass, density, ...)
-                                        weight_tmp *= weights[ip_other]
-                                        # volume of voronoi cell
-                                        weight_tmp *= (
-                                            (4.0 / 3.0) * cp.pi * hsml[ip_other] ** 3
+                                        part_dist_bool = 1
+                                    else:
+                                        part_dist_bool = 0
+
+                                    # smoothing kernel
+                                    weight_tmp = mexican_kernel(dist, filter_length)
+                                    # optional weight (e.g. mass, density, ...)
+                                    weight_tmp *= weights[ip_other]
+                                    # volume of voronoi cell
+                                    weight_tmp *= (
+                                        (4.0 / 3.0) * cp.pi * hsml[ip_other] ** 3
+                                    )
+                                    weight_tmp *= part_dist_bool
+                                    # normalization of the integral
+                                    # for the mexican filter it is a bit different
+                                    # the normalization uses the sphere kernel
+                                    normalization += (
+                                        weights[ip_other]
+                                        * (4.0 / 3.0)
+                                        * cp.pi
+                                        * hsml[ip_other] ** 3
+                                        * sphere_kernel(
+                                            dist, filter_window * filter_length
                                         )
-                                        # normalization of the integral
-                                        # for the mexican filter it is a bit different
-                                        # the normalization uses the sphere kernel
-                                        normalization += (
-                                            weights[ip_other]
-                                            * (4.0 / 3.0)
-                                            * cp.pi
-                                            * hsml[ip_other] ** 3
-                                            * sphere_kernel(
-                                                dist, filter_window * filter_length
-                                            )
-                                        )
-                                        smoothVarRegister += (
-                                            variable[ip_other] * weight_tmp
-                                        )
-                                        numInteractingPartNew += 1
+                                    )
+                                    smoothVarRegister += variable[ip_other] * weight_tmp
+                                    numInteractingPartNew += part_dist_bool
 
             smoothVarRegister /= normalization
 
@@ -515,29 +524,34 @@ def apply_filter_optimized_vector(
                                     start_index, start_index + n_particles
                                 ):
                                     dist = distance((xp, yp, zp), pos[ip_other])
+
                                     if dist < filter_window * filter_length:
+                                        part_dist_bool = 1
+                                    else:
+                                        part_dist_bool = 0
 
-                                        # smoothing kernel
-                                        weight_tmp = sphere_kernel(dist, filter_length)
-                                        # optional weight (e.g. mass, density, ...)
-                                        weight_tmp *= weights[ip_other]
-                                        # volume of voronoi cell
-                                        weight_tmp *= (
-                                            (4.0 / 3.0) * cp.pi * hsml[ip_other] ** 3
-                                        )
-                                        # normalization of the integral
-                                        normalization += weight_tmp
+                                    # smoothing kernel
+                                    weight_tmp = sphere_kernel(dist, filter_length)
+                                    # optional weight (e.g. mass, density, ...)
+                                    weight_tmp *= weights[ip_other]
+                                    # volume of voronoi cell
+                                    weight_tmp *= (
+                                        (4.0 / 3.0) * cp.pi * hsml[ip_other] ** 3
+                                    )
+                                    weight_tmp *= part_dist_bool
+                                    # normalization of the integral
+                                    normalization += weight_tmp
 
-                                        smoothVarRegister_x += (
-                                            variable_x[ip_other] * weight_tmp
-                                        )
-                                        smoothVarRegister_y += (
-                                            variable_y[ip_other] * weight_tmp
-                                        )
-                                        smoothVarRegister_z += (
-                                            variable_z[ip_other] * weight_tmp
-                                        )
-                                        numInteractingPartNew += 1
+                                    smoothVarRegister_x += (
+                                        variable_x[ip_other] * weight_tmp
+                                    )
+                                    smoothVarRegister_y += (
+                                        variable_y[ip_other] * weight_tmp
+                                    )
+                                    smoothVarRegister_z += (
+                                        variable_z[ip_other] * weight_tmp
+                                    )
+                                    numInteractingPartNew += part_dist_bool
 
             elif filter_type == 1:
                 for tile_x in range(ip_tile_x_min, ip_tile_x_max + 1):
@@ -565,30 +579,34 @@ def apply_filter_optimized_vector(
                                     start_index, start_index + n_particles
                                 ):
                                     dist = distance((xp, yp, zp), pos[ip_other])
-                                    if dist < filter_window * filter_length:
-                                        # smoothing kernel
-                                        weight_tmp = gaussian_kernel(
-                                            dist, filter_length
-                                        )
-                                        # optional weight (e.g. mass, density, ...)
-                                        weight_tmp *= weights[ip_other]
-                                        # volume of voronoi cell
-                                        weight_tmp *= (
-                                            (4.0 / 3.0) * cp.pi * hsml[ip_other] ** 3
-                                        )
-                                        # normalization of the integral
-                                        normalization += weight_tmp
 
-                                        smoothVarRegister_x += (
-                                            variable_x[ip_other] * weight_tmp
-                                        )
-                                        smoothVarRegister_y += (
-                                            variable_y[ip_other] * weight_tmp
-                                        )
-                                        smoothVarRegister_z += (
-                                            variable_z[ip_other] * weight_tmp
-                                        )
-                                        numInteractingPartNew += 1
+                                    if dist < filter_window * filter_length:
+                                        part_dist_bool = 1
+                                    else:
+                                        part_dist_bool = 0
+
+                                    # smoothing kernel
+                                    weight_tmp = gaussian_kernel(dist, filter_length)
+                                    # optional weight (e.g. mass, density, ...)
+                                    weight_tmp *= weights[ip_other]
+                                    # volume of voronoi cell
+                                    weight_tmp *= (
+                                        (4.0 / 3.0) * cp.pi * hsml[ip_other] ** 3
+                                    )
+                                    weight_tmp *= part_dist_bool
+                                    # normalization of the integral
+                                    normalization += weight_tmp
+
+                                    smoothVarRegister_x += (
+                                        variable_x[ip_other] * weight_tmp
+                                    )
+                                    smoothVarRegister_y += (
+                                        variable_y[ip_other] * weight_tmp
+                                    )
+                                    smoothVarRegister_z += (
+                                        variable_z[ip_other] * weight_tmp
+                                    )
+                                    numInteractingPartNew += part_dist_bool
 
             elif filter_type == 2:  # mexican-hat filter
                 for tile_x in range(ip_tile_x_min, ip_tile_x_max + 1):
@@ -616,38 +634,44 @@ def apply_filter_optimized_vector(
                                     start_index, start_index + n_particles
                                 ):
                                     dist = distance((xp, yp, zp), pos[ip_other])
-                                    if dist < filter_window * filter_length:
-                                        # smoothing kernel
-                                        weight_tmp = mexican_kernel(dist, filter_length)
-                                        # optional weight (e.g. mass, density, ...)
-                                        weight_tmp *= weights[ip_other]
-                                        # volume of voronoi cell
-                                        weight_tmp *= (
-                                            (4.0 / 3.0) * cp.pi * hsml[ip_other] ** 3
-                                        )
-                                        # normalization of the integral
-                                        # for the mexican filter it is a bit different
-                                        # the normalization uses the sphere kernel
-                                        normalization += (
-                                            weights[ip_other]
-                                            * (4.0 / 3.0)
-                                            * cp.pi
-                                            * hsml[ip_other] ** 3
-                                            * sphere_kernel(
-                                                dist, filter_window * filter_length
-                                            )
-                                        )
 
-                                        smoothVarRegister_x += (
-                                            variable_x[ip_other] * weight_tmp
+                                    if dist < filter_window * filter_length:
+                                        part_dist_bool = 1
+                                    else:
+                                        part_dist_bool = 0
+
+                                    # smoothing kernel
+                                    weight_tmp = mexican_kernel(dist, filter_length)
+                                    # optional weight (e.g. mass, density, ...)
+                                    weight_tmp *= weights[ip_other]
+                                    # volume of voronoi cell
+                                    weight_tmp *= (
+                                        (4.0 / 3.0) * cp.pi * hsml[ip_other] ** 3
+                                    )
+                                    weight_tmp *= part_dist_bool
+                                    # normalization of the integral
+                                    # for the mexican filter it is a bit different
+                                    # the normalization uses the sphere kernel
+                                    normalization += (
+                                        weights[ip_other]
+                                        * (4.0 / 3.0)
+                                        * cp.pi
+                                        * hsml[ip_other] ** 3
+                                        * sphere_kernel(
+                                            dist, filter_window * filter_length
                                         )
-                                        smoothVarRegister_y += (
-                                            variable_y[ip_other] * weight_tmp
-                                        )
-                                        smoothVarRegister_z += (
-                                            variable_z[ip_other] * weight_tmp
-                                        )
-                                        numInteractingPartNew += 1
+                                    )
+
+                                    smoothVarRegister_x += (
+                                        variable_x[ip_other] * weight_tmp
+                                    )
+                                    smoothVarRegister_y += (
+                                        variable_y[ip_other] * weight_tmp
+                                    )
+                                    smoothVarRegister_z += (
+                                        variable_z[ip_other] * weight_tmp
+                                    )
+                                    numInteractingPartNew += part_dist_bool
 
             smoothVarRegister_x /= normalization
             smoothVarRegister_y /= normalization
